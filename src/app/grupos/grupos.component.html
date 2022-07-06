@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="box_divider">
+        <h1>Grupos</h1>
+    </div>
+    <div class="box_grupos" cdkDropListGroup>
+        <div class="grupos">
+            <span class="title">Grupos</span>
+            <ul class="list-group grupos" 
+                cdkDropList 
+                #todoList="cdkDropList"
+                [cdkDropListData]="grupos"
+                [cdkDropListConnectedTo]="[doneList]"
+                (cdkDropListDropped)="onDropped($event)">
+                <li class="list-group-item" cdkDrag *ngFor="let grupo of grupos">{{grupo.name}}</li>
+            </ul>
+        </div>
+        <div class="empleados">
+            <span class="title">Empleados</span>
+            <div class="box_grupo" cdkDropList 
+            #doneList="cdkDropList"
+            [cdkDropListData]="gruposDone"
+            [cdkDropListConnectedTo]="[todoList]"
+            (cdkDropListDropped)="onDropped($event)">
+                <div  *ngFor="let grupo of gruposDone;let i = index;">
+                    <span class="grupo">
+                        <input class="form-check-input" [(ngModel)]="grupo.check" (change)="checked(grupo)" name="check" type="checkbox" checked>
+                        {{grupo.name}}
+                        <i class="trash" (click)="borrarGrupo(i)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                            </svg>
+                        </i>
+                    </span>
+                    <ul>
+                        <li *ngFor="let empleado of grupo.empleados">
+                            <input class="form-check-input" [(ngModel)]="empleado.check" type="checkbox" name="check" [checked]="true" value="true">
+                            {{empleado.name}}
+                        </li>
+                    </ul>
+                </div>
+                <button class="btn btn_continuar" (click)="continuar()">Continuar</button>
+            </div>
+        </div>
+    </div>
+</div>

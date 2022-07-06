@@ -1,0 +1,63 @@
+<div class="card">
+    <div class="box_divider">
+        <h1>Empleados</h1>
+        <button class="btn btn_nuevo" (click)="modalView(empleado)">Nuevo</button>
+        <div class="buscar">
+            <input class="form-control" [(ngModel)]="buscar" type="text" placeholder="Buscar..." name="buscar">
+        </div>
+    </div>
+    <div class="box_table">
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>CUMPLEAÑOS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let empleado of empleados | filtro:page:buscar">
+                    <td>{{empleado.id}}</td>
+                    <td>{{empleado.name}} {{empleado.last_name}}</td>
+                    <td class="center">{{empleado.birthday | date:'dd/MM/yyyy'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <span class="alert" *ngIf="(empleados | filtro:page:buscar).length === 0">No hay más empleados por mostrar</span>
+        <div class="pagination">
+              <button class="btn" (click)="prevPage()">Anterior</button>
+              <span class="pagina">{{pagina}}</span>
+              <button class="btn" (click)="nextPage()" [disabled]="(empleados | filtro:page:buscar).length === 0">Siguiente</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODALS -->
+<ng-template #empleado let-modal class="modal-dialog">
+    <div class="modal-header">
+        <h4 class="modal-title">Nuevo Empleado</h4>
+    </div>
+    <div class="modal-body">
+        <form #form="ngForm">
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" [(ngModel)]="empleadoForm.name" name="name" maxlength="30" required>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label>Apellido</label>
+                    <input type="text" class="form-control" [(ngModel)]="empleadoForm.last_name" name="last_name" maxlength="30" required>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label>Fecha de Nacimientos</label>
+                    <input type="date" class="form-control" [(ngModel)]="empleadoForm.birthday" name="birthday" required>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn_cancelar" (click)="modal.close()">Cancelar</button>
+        <button type="submit" class="btn btn-sm btn_nuevo" (click)="guardarEmpleado(form)" [disabled]="!form.valid">Guardar</button>
+    </div>
+</ng-template> 
